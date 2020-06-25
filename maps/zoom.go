@@ -39,9 +39,12 @@ func BoundsZoom(proj crs.ProjectTransformer, bounds geo.LatLngBounds, size geome
 
 	scale := math.Min(size.X/boundsSize.X, size.Y/boundsSize.Y)
 
-	zoom = ScaleZoom(proj, scale, zoom)
+	zoom = math.Floor(ScaleZoom(proj, scale, zoom))
+	if zoom > maxZoom {
+		return maxZoom
+	}
 
-	return math.Floor(zoom)
+	return zoom
 }
 
 func ScaleZoom(proj crs.ProjectTransformer, scale float64, fromZoom float64) float64 {
